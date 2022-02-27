@@ -1,0 +1,17 @@
+{
+    "description": "This is the graduation certificate for Zero Knowledge University sponsored by Harmony Blockchain.",
+    "external_url": "https://zku.one/",
+    "image": "https://d1lox9puhs0wbg.cloudfront.net/Test2/zkuNft.jpg",
+    "name": "ZKU.one Graduation Certificate",
+    "attributes": [
+        {
+            "display_type": "date", 
+            "trait_type": "graduation",
+            "value": "1645095600"
+        },
+        {
+            "trait_type": "cohort",
+            "value": "1"
+        }
+    ]
+}
