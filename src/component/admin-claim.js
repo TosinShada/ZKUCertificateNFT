@@ -183,11 +183,10 @@ const AdminClaim = () => {
                             >
                                 {isSubmitting ? (
                                     <Fragment>
-                                        <Spinner size='sm' type='grow' />
                                         <span className='ml-2'>Adding...</span>
                                     </Fragment>
                                 ) : (
-                                    "Add Cohort"
+                                    "Airdrop Token"
                                 )}
                             </Button>
                             <Button

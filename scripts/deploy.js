@@ -15,7 +15,7 @@ async function main() {
 
     // We get the contract to deploy
     const ZKUNFT = await hre.ethers.getContractFactory("ZKUNFT")
-    const zkuNft = await ZKUNFT.deploy("https://d1lox9puhs0wbg.cloudfront.net/")
+    const zkuNft = await ZKUNFT.deploy("https://ipfs.io/ipfs/")
 
     await zkuNft.deployed()
 

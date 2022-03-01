@@ -35,7 +35,8 @@ const Cohort = () => {
     const defaultValues = {
         cohortId: "",
         limit: 0,
-        whitelistedAddresses: ""
+        whitelistedAddresses: "",
+        ipfsHash: ""
     }
 
     // ** Hooks
@@ -170,6 +171,30 @@ const Cohort = () => {
                                 </FormFeedback>
                             )}
                         </Col>
+                        <Col md={12} xs={12}>
+                            <Label className='form-label' for='ipfsHash'>
+                                IPFS Hash
+                            </Label>
+                            <Controller
+                                name='ipfsHash'
+                                control={control}
+                                render={({ field }) => {
+                                    return (
+                                        <Input
+                                            {...field}
+                                            id='ipfsHash'
+                                            value={field.value}
+                                            invalid={errors.ipfsHash && true}
+                                        />
+                                    )
+                                }}
+                            />
+                            {errors.ipfsHash && (
+                                <FormFeedback>
+                                    Please enter a IPFS Hash
+                                </FormFeedback>
+                            )}
+                        </Col>
                         <Col md={12}>
                             <Label
                                 className='form-label'
@@ -185,6 +210,7 @@ const Cohort = () => {
                                         <Input
                                             {...field}
                                             id='whitelistedAddresses'
+                                            type='textarea'
                                             placeholder='Enter the whitelisted addresses separated by commas'
                                             value={field.value}
                                             invalid={
@@ -210,7 +236,6 @@ const Cohort = () => {
                             >
                                 {isSubmitting ? (
                                     <Fragment>
-                                        <Spinner size='sm' type='grow' />
                                         <span className='ml-2'>Adding...</span>
                                     </Fragment>
                                 ) : (

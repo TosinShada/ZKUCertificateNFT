@@ -3,7 +3,7 @@ import { keccak256 } from "ethers/lib/utils"
 import { MerkleTree } from "merkletreejs"
 import ZKUNFT from "../artifacts/contracts/ZKUNFT.sol/ZKUNFT.json"
 
-const contractAddress = "0x4ef1e5d509E9c2e3f39f1c8399e644063408d612"
+const contractAddress = "0xc57c51DB746e7975e6187dB47B861fc600eC8c87"
 const buf2hex = (x) => `0x${x.toString("hex")}`
 
 // get the smart contract
@@ -21,7 +21,7 @@ export async function connectContract() {
 
 export async function createCohort(request) {
     try {
-        const { cohortId, limit, whitelistedAddresses } = request
+        const { cohortId, limit, whitelistedAddresses, ipfsHash } = request
         connectContract()
 
         const wlAddressesArray = whitelistedAddresses.split(",")
@@ -32,7 +32,7 @@ export async function createCohort(request) {
         const root = tree.getHexRoot()
 
         const tx = await contract
-            .createCohort(cohortId, limitNumber, root, leaves)
+            .createCohort(cohortId, limitNumber, root, leaves, ipfsHash)
             .catch((err) => {
                 throw err
             })
@@ -52,6 +52,7 @@ export async function adminClaimToken(request) {
 
     const leaves = data[0]
     const root = data[1]
+    const ipfsHash = data[2]
 
     if (
         leaves.length < 1 ||
@@ -71,7 +72,7 @@ export async function adminClaimToken(request) {
     const proof = tree.getProof(keccak256(address)).map((x) => buf2hex(x.data))
 
     const tx = await contract
-        .adminClaimToken(cohortId, proof, address)
+        .adminClaimToken(cohortId, proof, address, ipfsHash)
         .catch((err) => {
             console.log(err)
             return null

@@ -24,6 +24,7 @@ contract ZKUNFT is ERC721, Ownable {
         uint128 tokenMinted;
         bytes32 merkleRoot;
         bytes32[] whitelistedAddresses;
+        string ipfsHash;
     }
 
     event Claim(
@@ -74,14 +75,14 @@ contract ZKUNFT is ERC721, Ownable {
     function issueToken(
         string memory _cohortId,
         address to,
-        bool _isAdmin
+        bool _isAdmin,
+        string memory _ipfsHash
     ) internal limitCheck(_cohortId, to) returns (uint256) {
         uint128 nextCohortTokenIndex = cohorts[_cohortId].tokenMinted;
         string memory _uri = string(
             abi.encodePacked(
                 contractBaseURI,
-                _cohortId,
-                "/metadata.json"
+                _ipfsHash
             )
         );
 
@@ -124,13 +125,14 @@ contract ZKUNFT is ERC721, Ownable {
     function adminClaimToken(
         string memory _cohortId,
         bytes32[] memory _proof,
-        address to
+        address to,
+        string memory _ipfsHash
     ) external onlyAdmin merkleCheck(_cohortId, _proof, to) returns (uint256) {
-        return issueToken(_cohortId, to, true);
+        return issueToken(_cohortId, to, true, _ipfsHash);
     }
 
     // Same as the above but this will allow non-admin to claim the token. The signer's address needs to be whitelisted
-    function claimToken(string memory _cohortId, bytes32[] memory _proof)
+    function claimToken(string memory _cohortId, bytes32[] memory _proof, string memory _ipfsHash)
         external
         merkleCheck(_cohortId, _proof, msg.sender)
         returns (uint256)
@@ -141,7 +143,7 @@ contract ZKUNFT is ERC721, Ownable {
             "ZKU: address not eligible for claim"
         );
 
-        return issueToken(_cohortId, msg.sender, false);
+        return issueToken(_cohortId, msg.sender, false, _ipfsHash);
     }
 
     // Right now the NFTs are non-transferrable as we expect that only those that did the course and completed all the milestones should be able to hold the token. However, in the event that we want to make it transferrable, this function will allow us do that.
@@ -154,14 +156,15 @@ contract ZKUNFT is ERC721, Ownable {
         string memory _cohortId,
         uint128 _limit,
         bytes32 _merkleRoot,
-        bytes32[] memory _whitelistedAddresses
+        bytes32[] memory _whitelistedAddresses,
+        string memory _ipfsHash
     ) external onlyAdmin {
         require(
             cohorts[_cohortId].limit == 0,
             "ZKU: Cohort already exists"
         );
         require(_limit > 0, "ZKU: Limit must be greater than 0");
-        Cohort memory cohort = Cohort(_limit, 0, _merkleRoot, _whitelistedAddresses);
+        Cohort memory cohort = Cohort(_limit, 0, _merkleRoot, _whitelistedAddresses, _ipfsHash);
         cohorts[_cohortId] = cohort;
     }
 
@@ -190,8 +193,8 @@ contract ZKUNFT is ERC721, Ownable {
         cohorts[_cohortId].limit = _limit;
     }
 
-    function _getCohortDetails(string memory _cohortId) external view returns (bytes32[] memory, bytes32) {
-        return (cohorts[_cohortId].whitelistedAddresses, cohorts[_cohortId].merkleRoot);
+    function _getCohortDetails(string memory _cohortId) external view returns (bytes32[] memory, bytes32, string memory) {
+        return (cohorts[_cohortId].whitelistedAddresses, cohorts[_cohortId].merkleRoot, cohorts[_cohortId].ipfsHash);
     }
 
     // This function allows an existing admin to add new admins
