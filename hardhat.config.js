@@ -25,6 +25,11 @@ module.exports = {
             url: "https://api.s0.b.hmny.io",
             // eslint-disable-next-line object-shorthand
             accounts: accounts
+        },
+        mainnet: {
+            url: "https://api.harmony.one",
+            // eslint-disable-next-line object-shorthand
+            accounts: accounts
         }
     }
 }

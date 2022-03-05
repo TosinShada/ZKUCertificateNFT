@@ -1,25 +1,6 @@
-# Web3 - Full Tutorial
+# ZKU NFT Graduation Certificate
+ZKU is an online course / informal study group, for software developers to learn how to build market-ready products in web3 using zero-knowledge proof technology. The goal is to launch a zk-product on mainnet with in a couple of months. This is no doubt challenging; we’re here to help.
 
-The demo contains a basic web3 app and smart contract for minting NFTs.
+For general background and philosophy behind this course, including our learn-to-earn model, and career opportunities upon graduation, please see:
 
-- See it in action in the [Web3 NFT Tutorial](https://youtu.be/meTpMP0J5E8) on YouTube.
-- Follow the full [Web3 Tutorial](https://fireship.io/lessons/web3-solidity-hardhat-react-tutorial) on Fireship.
-
-## Usage
-
-```bash
-git clone <this-repo>
-npm install
-
-# terminal 1
-npx hardhat node
-
-# terminal 2
-npx hardhat compile
-npx hardhat run scripts/deploy.js --network testnet
-
-# terminal 3 
-npm run dev
-```
-
-Update the deployed contract address in `compoonents/Home.js` 
+🎓 [On-boarding 10,000 Developers for ZK Products](https://zku.one/9426cdbcd8f24e2c9306e6adeecb4d37)
