@@ -21,13 +21,13 @@ import {
 // ** Third Party Components
 import { useForm, Controller } from "react-hook-form"
 
-import { adminClaimToken } from "../services/logic"
+import { studentClaimToken } from "../services/logic"
 import { handleSuccess, handleError } from "./alert"
 
 // ** Styles
 import "@styles/react/libs/input-number/input-number.scss"
 
-const AdminClaim = () => {
+const StudentClaim = () => {
     // ** States
     const [show, setShow] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -50,14 +50,14 @@ const AdminClaim = () => {
         if (Object.values(data).every((field) => field.length > 0)) {
             setIsSubmitting(true)
             console.log("data", data)
-            const token = await adminClaimToken(data)
+            const token = await studentClaimToken(data)
             if (token) {
                 setIsSubmitting(false)
                 setShow(false)
                 reset()
                 handleSuccess({
                     title: "Token Created",
-                    text: `Token successfully airdropped with id: ${token.hash}`
+                    text: `Token successfully claimed with id: ${token.hash}`
                 })
             } else {
                 setIsSubmitting(false)
@@ -65,7 +65,7 @@ const AdminClaim = () => {
                 reset()
                 handleError({
                     title: "Error Occured",
-                    text: "Token airdrop failed"
+                    text: "Token claim failed"
                 })
             }
             return null
@@ -85,10 +85,9 @@ const AdminClaim = () => {
             <Col md='4' xl='3'>
                 <Card className='bg-transparent border-primary shadow-none'>
                     <CardBody>
-                        <CardTitle tag='h4'>Claim Token - Admin</CardTitle>
+                        <CardTitle tag='h4'>Claim Token - Student</CardTitle>
                         <CardText>
-                            Airdrop a token to a student's address. This
-                            functionality is for admins only.
+                            Claim a token to your address.
                         </CardText>
                         <CardText>
                             <Button
@@ -96,7 +95,7 @@ const AdminClaim = () => {
                                 outline
                                 onClick={() => setShow(true)}
                             >
-                                Airdrop Token
+                                Claim Token
                             </Button>
                         </CardText>
                     </CardBody>
@@ -113,10 +112,9 @@ const AdminClaim = () => {
                 ></ModalHeader>
                 <ModalBody className='px-sm-5 mx-50 pb-5'>
                     <div className='text-center mb-2'>
-                        <h1 className='mb-1'>Airdrop Token</h1>
+                        <h1 className='mb-1'>Claim Token</h1>
                         <p>
-                            Use this form to airdrop a token to a student's
-                            address
+                            Use this form to claim a ZKU graduation token
                         </p>
                     </div>
                     <Row
@@ -124,7 +122,7 @@ const AdminClaim = () => {
                         className='gy-1 pt-75'
                         onSubmit={handleSubmit(onSubmit)}
                     >
-                        <Col md={6} xs={12}>
+                        <Col md={12} >
                             <Label className='form-label' for='cohortId'>
                                 Cohort ID
                             </Label>
@@ -149,31 +147,6 @@ const AdminClaim = () => {
                                 </FormFeedback>
                             )}
                         </Col>
-                        <Col md={6} xs={12}>
-                            <Label className='form-label' for='address'> 
-                                Student's Address
-                            </Label>
-                            <Controller
-                                control={control}
-                                name='address'
-                                render={({ field }) => {
-                                    return (
-                                        <Input
-                                            {...field}
-                                            id='address'
-                                            placeholder="Enter the student's address"
-                                            value={field.value}
-                                            invalid={errors.address && true}
-                                        />
-                                    )
-                                }}
-                            />
-                            {errors.address && (
-                                <FormFeedback>
-                                    Please enter valid Whitelisted Addresses
-                                </FormFeedback>
-                            )}
-                        </Col>
                         <Col xs={12} className='text-center mt-2 pt-50'>
                             <Button
                                 type='submit'
@@ -186,7 +159,7 @@ const AdminClaim = () => {
                                         <span className='ml-2'>Adding...</span>
                                     </Fragment>
                                 ) : (
-                                    "Airdrop Token"
+                                    "Claim Token"
                                 )}
                             </Button>
                             <Button
@@ -209,4 +182,4 @@ const AdminClaim = () => {
     )
 }
 
-export default AdminClaim
+export default StudentClaim

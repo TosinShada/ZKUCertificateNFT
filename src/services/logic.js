@@ -31,16 +31,31 @@ export async function createCohort(request) {
         const tree = new MerkleTree(leaves, keccak256, { sort: true })
         const root = tree.getHexRoot()
 
-        const tx = await contract
+        await contract
             .createCohort(cohortId, limitNumber, root, leaves, ipfsHash)
             .catch((err) => {
                 throw err
             })
-        await tx.wait()
         const response = { merkleRoot: root }
         return response
     } catch (err) {
         return { error: err }
+    }
+}
+
+export async function createAdmin(request) {
+    try {
+        const { walletAddress } = request
+        connectContract()
+
+        await contract
+            .updateAdmin(walletAddress, true)
+            .catch((err) => {
+                throw err
+            })
+        return true
+    } catch (err) {
+        return false
     }
 }
 
@@ -71,12 +86,47 @@ export async function adminClaimToken(request) {
 
     const proof = tree.getProof(keccak256(address)).map((x) => buf2hex(x.data))
 
-    const tx = await contract
+    const response = await contract
         .adminClaimToken(cohortId, proof, address, ipfsHash)
         .catch((err) => {
             console.log(err)
             return null
         })
-    const response = await tx.wait()
+    return response
+}
+
+export async function studentClaimToken(request) {
+    const { cohortId } = request
+    connectContract()
+
+    const data = await contract._getCohortDetails(cohortId)
+
+    const leaves = data[0]
+    const root = data[1]
+    const ipfsHash = data[2]
+
+    if (
+        leaves.length < 1 ||
+        root ===
+            "0x0000000000000000000000000000000000000000000000000000000000000000"
+    ) {
+        return null
+    }
+
+    const tree = new MerkleTree(leaves, keccak256, { sort: true })
+    const internalRoot = tree.getHexRoot()
+
+    if (internalRoot !== root) {
+        return null
+    }
+
+    const proof = tree.getProof(keccak256(address)).map((x) => buf2hex(x.data))
+
+    const response = await contract
+        .claimToken(cohortId, proof, ipfsHash)
+        .catch((err) => {
+            console.log(err)
+            return null
+        })
     return response
 }

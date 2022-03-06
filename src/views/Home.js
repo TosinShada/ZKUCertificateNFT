@@ -6,6 +6,8 @@ import Breadcrumbs from "@components/breadcrumbs"
 import WalletConnect from "../component/wallet-connect"
 import Cohort from "../component/cohort"
 import AdminClaim from "../component/admin-claim"
+import StudentClaim from "../component/student-claim"
+import UpdateAdmin from "../component/update-admin"
 
 // ** Reactstrap Imports
 import { Row } from "reactstrap"
@@ -20,6 +22,8 @@ const Home = () => {
                 <WalletConnect />
                 <Cohort />
                 <AdminClaim />
+                <StudentClaim />
+                <UpdateAdmin />
             </Row>
         </Fragment>
     )

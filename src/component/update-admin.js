@@ -21,20 +21,19 @@ import {
 // ** Third Party Components
 import { useForm, Controller } from "react-hook-form"
 
-import { adminClaimToken } from "../services/logic"
+import { createAdmin } from "../services/logic"
 import { handleSuccess, handleError } from "./alert"
 
 // ** Styles
 import "@styles/react/libs/input-number/input-number.scss"
 
-const AdminClaim = () => {
+const UpdateAdmin = () => {
     // ** States
     const [show, setShow] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     const defaultValues = {
-        cohortId: "",
-        address: ""
+        walletAddress: ""
     }
 
     // ** Hooks
@@ -50,23 +49,17 @@ const AdminClaim = () => {
         if (Object.values(data).every((field) => field.length > 0)) {
             setIsSubmitting(true)
             console.log("data", data)
-            const token = await adminClaimToken(data)
-            if (token) {
+            const admin = await createAdmin(data)
+            if (admin) {
                 setIsSubmitting(false)
                 setShow(false)
                 reset()
-                handleSuccess({
-                    title: "Token Created",
-                    text: `Token successfully airdropped with id: ${token.hash}`
-                })
+                handleSuccess({title: "Admin Created", text: "Admin created successfully"})
             } else {
                 setIsSubmitting(false)
                 setShow(false)
                 reset()
-                handleError({
-                    title: "Error Occured",
-                    text: "Token airdrop failed"
-                })
+                handleError({title: "Error Occured", text: "Admin creation failed"})
             }
             return null
         } else {
@@ -85,9 +78,9 @@ const AdminClaim = () => {
             <Col md='4' xl='3'>
                 <Card className='bg-transparent border-primary shadow-none'>
                     <CardBody>
-                        <CardTitle tag='h4'>Claim Token - Admin</CardTitle>
+                        <CardTitle tag='h4'>Add a New Admin</CardTitle>
                         <CardText>
-                            Airdrop a token to a student's address. This
+                            Add a new admninistrator to the smart contract. This
                             functionality is for admins only.
                         </CardText>
                         <CardText>
@@ -96,7 +89,7 @@ const AdminClaim = () => {
                                 outline
                                 onClick={() => setShow(true)}
                             >
-                                Airdrop Token
+                                Add Admin
                             </Button>
                         </CardText>
                     </CardBody>
@@ -113,10 +106,10 @@ const AdminClaim = () => {
                 ></ModalHeader>
                 <ModalBody className='px-sm-5 mx-50 pb-5'>
                     <div className='text-center mb-2'>
-                        <h1 className='mb-1'>Airdrop Token</h1>
+                        <h1 className='mb-1'>Add Administrator</h1>
                         <p>
-                            Use this form to airdrop a token to a student's
-                            address
+                            Use this form to add a new admin to the smart
+                            contract.
                         </p>
                     </div>
                     <Row
@@ -125,52 +118,27 @@ const AdminClaim = () => {
                         onSubmit={handleSubmit(onSubmit)}
                     >
                         <Col md={6} xs={12}>
-                            <Label className='form-label' for='cohortId'>
-                                Cohort ID
+                            <Label className='form-label' for='walletAddress'>
+                                Wallet Address
                             </Label>
                             <Controller
                                 control={control}
-                                name='cohortId'
+                                name='walletAddress'
                                 render={({ field }) => {
                                     return (
                                         <Input
                                             {...field}
-                                            id='cohortId'
-                                            placeholder='Enter the name of the cohort'
+                                            id='walletAddress'
+                                            placeholder='Enter the address of the wallet'
                                             value={field.value}
-                                            invalid={errors.cohortId && true}
+                                            invalid={errors.walletAddress && true}
                                         />
                                     )
                                 }}
                             />
-                            {errors.cohortId && (
+                            {errors.walletAddress && (
                                 <FormFeedback>
-                                    Please enter a valid Cohort ID
-                                </FormFeedback>
-                            )}
-                        </Col>
-                        <Col md={6} xs={12}>
-                            <Label className='form-label' for='address'> 
-                                Student's Address
-                            </Label>
-                            <Controller
-                                control={control}
-                                name='address'
-                                render={({ field }) => {
-                                    return (
-                                        <Input
-                                            {...field}
-                                            id='address'
-                                            placeholder="Enter the student's address"
-                                            value={field.value}
-                                            invalid={errors.address && true}
-                                        />
-                                    )
-                                }}
-                            />
-                            {errors.address && (
-                                <FormFeedback>
-                                    Please enter valid Whitelisted Addresses
+                                    Please enter a valid Wallet Address
                                 </FormFeedback>
                             )}
                         </Col>
@@ -179,21 +147,21 @@ const AdminClaim = () => {
                                 type='submit'
                                 className='me-1'
                                 color='primary'
-                                {...(isSubmitting && { disabled: true })}
+                                {...(isSubmitting && {disabled: true})}
                             >
                                 {isSubmitting ? (
                                     <Fragment>
                                         <span className='ml-2'>Adding...</span>
                                     </Fragment>
                                 ) : (
-                                    "Airdrop Token"
+                                    "Add Admin"
                                 )}
                             </Button>
                             <Button
                                 type='reset'
                                 color='secondary'
                                 outline
-                                {...(isSubmitting && { disabled: true })}
+                                {...(isSubmitting && {disabled: true})}
                                 onClick={() => {
                                     reset()
                                     setShow(false)
@@ -209,4 +177,4 @@ const AdminClaim = () => {
     )
 }
 
-export default AdminClaim
+export default UpdateAdmin
