@@ -33,8 +33,7 @@ const StudentClaim = () => {
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     const defaultValues = {
-        cohortId: "",
-        address: ""
+        cohortId: ""
     }
 
     // ** Hooks

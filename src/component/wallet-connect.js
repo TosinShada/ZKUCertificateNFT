@@ -21,14 +21,14 @@ const WalletConnect = () => {
         }
 
         const accounts = await ethereum.request({ method: "eth_accounts" })
-        // const chainId = await ethereum.request({ method: 'eth_chainId' })
+        const chainId = await ethereum.request({ method: 'eth_chainId' })
 
-        // if (chainId !== 1337) {
-        //   await ethereum.request({
-        //     method: 'wallet_switchEthereumChain',
-        //     params: [{ chainId: '0x1' }]
-        //   })
-        // }
+        if (chainId !== '0x6357d2e0') {
+          await ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0x6357d2e0' }]
+          })
+        }
 
         if (accounts.length !== 0) {
             const account = accounts[0]
@@ -54,7 +54,7 @@ const WalletConnect = () => {
 
     useEffect(() => {
         checkWalletIsConnected()
-    }, [currentAccount])
+    }, [])
 
     return (
         <Col md='4' xl='3'>

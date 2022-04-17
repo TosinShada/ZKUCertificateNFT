@@ -117,7 +117,7 @@ const UpdateAdmin = () => {
                         className='gy-1 pt-75'
                         onSubmit={handleSubmit(onSubmit)}
                     >
-                        <Col md={6} xs={12}>
+                        <Col xs={12}>
                             <Label className='form-label' for='walletAddress'>
                                 Wallet Address
                             </Label>

@@ -8,6 +8,7 @@ import Cohort from "../component/cohort"
 import AdminClaim from "../component/admin-claim"
 import StudentClaim from "../component/student-claim"
 import UpdateAdmin from "../component/update-admin"
+import UploadData from "../component/upload-nft"
 
 // ** Reactstrap Imports
 import { Row } from "reactstrap"
@@ -24,6 +25,7 @@ const Home = () => {
                 <AdminClaim />
                 <StudentClaim />
                 <UpdateAdmin />
+                <UploadData />
             </Row>
         </Fragment>
     )

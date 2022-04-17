@@ -9,12 +9,13 @@ const buf2hex = (x) => `0x${x.toString("hex")}`
 // get the smart contract
 // eslint-disable-next-line no-unused-vars
 let contract
+let signer
 
 export async function connectContract() {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
 
     // get the end user
-    const signer = provider.getSigner()
+    signer = provider.getSigner()
 
     contract = new ethers.Contract(contractAddress, ZKUNFT.abi, signer)
 }
@@ -119,6 +120,9 @@ export async function studentClaimToken(request) {
     if (internalRoot !== root) {
         return null
     }
+
+    const address = await signer.getAddress()
+    console.log('Address', address)
 
     const proof = tree.getProof(keccak256(address)).map((x) => buf2hex(x.data))
 
