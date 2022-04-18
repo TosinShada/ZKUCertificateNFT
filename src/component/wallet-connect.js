@@ -23,10 +23,10 @@ const WalletConnect = () => {
         const accounts = await ethereum.request({ method: "eth_accounts" })
         const chainId = await ethereum.request({ method: 'eth_chainId' })
 
-        if (chainId !== '0x6357d2e0') {
+        if (chainId !== '0x63564c40') {
           await ethereum.request({
             method: 'wallet_switchEthereumChain',
-            params: [{ chainId: '0x6357d2e0' }]
+            params: [{ chainId: '0x63564c40' }]
           })
         }
 
