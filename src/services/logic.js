@@ -3,7 +3,7 @@ import { keccak256 } from "ethers/lib/utils"
 import { MerkleTree } from "merkletreejs"
 import ZKUNFT from "../artifacts/contracts/ZKUNFT.sol/ZKUNFT.json"
 
-const contractAddress = "0xc57c51DB746e7975e6187dB47B861fc600eC8c87"
+const contractAddress = "0x16e7A9cCA4856A7c1E3a9fef0E74C45269B2Df13"
 const buf2hex = (x) => `0x${x.toString("hex")}`
 
 // get the smart contract
