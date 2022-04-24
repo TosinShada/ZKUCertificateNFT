@@ -134,3 +134,34 @@ export async function studentClaimToken(request) {
         })
     return response
 }
+
+export async function UpdateWhitelistField(request) {
+    try {
+        const { cohortId, limit, whitelistedAddresses } = request
+        connectContract()
+
+        const wlAddressesArray = whitelistedAddresses.split(",")
+        const limitNumber = parseInt(limit)
+
+        const leaves = wlAddressesArray.map((v) => keccak256(v))
+        const tree = new MerkleTree(leaves, keccak256, { sort: true })
+        const root = tree.getHexRoot()
+
+        await contract
+            .setWhitelist(cohortId, leaves, limitNumber)
+            .catch((err) => {
+                throw err
+            })
+            
+        await contract
+            .setMerkleRoot(cohortId, root)
+            .catch((err) => {
+                throw err
+            })
+
+        const response = { merkleRoot: root }
+        return response
+    } catch (err) {
+        return { error: err }
+    }
+}
